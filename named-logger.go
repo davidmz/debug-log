@@ -10,8 +10,8 @@ import (
 )
 
 type justLogger interface {
-	print(string) error
-	checkName(string) bool
+	print(name string, message string) error
+	checkName(name string) bool
 }
 
 type namedLogger struct {
@@ -32,21 +32,21 @@ func (l *namedLogger) Print(v ...interface{}) {
 	if !l.checkName(l.name) {
 		return
 	}
-	_ = l.print(fmt.Sprint(v...))
+	_ = l.print(l.name, fmt.Sprint(v...))
 }
 
 func (l *namedLogger) Println(v ...interface{}) {
 	if !l.checkName(l.name) {
 		return
 	}
-	_ = l.print(fmt.Sprintln(v...))
+	_ = l.print(l.name, fmt.Sprintln(v...))
 }
 
 func (l *namedLogger) Printf(format string, v ...interface{}) {
 	if !l.checkName(l.name) {
 		return
 	}
-	_ = l.print(fmt.Sprintf(format, v...))
+	_ = l.print(l.name, fmt.Sprintf(format, v...))
 }
 
 func (l *namedLogger) Output() io.Writer { return l.out }
@@ -64,17 +64,17 @@ func (l *namedLogger) checkName(name string) bool {
 	return parseDebugEnv(l.envSource()).check(name)
 }
 
-func (l *namedLogger) print(s string) error {
+func (l *namedLogger) print(name string, s string) error {
 	if l.parent != nil {
-		return l.parent.print(s)
+		return l.parent.print(name, s)
 	}
 
 	// Do this early
 	var prefix string
 	if l.noTime {
-		prefix = fmt.Sprintf("[%s]", l.name)
+		prefix = fmt.Sprintf("[%s]", name)
 	} else {
-		prefix = fmt.Sprintf("%s [%s]", time.Now().Format(time.RFC3339), l.name)
+		prefix = fmt.Sprintf("%s [%s]", time.Now().Format(time.RFC3339), name)
 	}
 
 	l.lk.Lock()
