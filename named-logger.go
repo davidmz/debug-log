@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"strings"
 	"sync"
 	"time"
 )
@@ -85,7 +86,8 @@ func (l *namedLogger) print(s string) error {
 	if s != "" && s[0] != ' ' && s[0] != '\t' {
 		l.buf.WriteString(" ")
 	}
-	l.buf.WriteString(s)
+	l.buf.WriteString(strings.TrimRight(s, "\r\n"))
+	l.buf.WriteString("\n")
 	_, err := l.buf.WriteTo(l.out)
 	return err
 }
