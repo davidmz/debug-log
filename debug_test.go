@@ -14,11 +14,20 @@ func ExampleNewLogger() {
 	// Output: [test] log line
 }
 
-func ExampleNamedLogger_Fork() {
+func ExampleLogger_Fork() {
 	_ = os.Setenv("DEBUG", "test*")
 	logger := debug.NewLogger("test", debug.WithoutTime())
 	logger = logger.Fork("test:fork")
 
 	logger.Println("log line")
 	// Output: [test:fork] log line
+}
+
+func ExampleLogger_Fork_using_name() {
+	_ = os.Setenv("DEBUG", "test*")
+	logger := debug.NewLogger("test", debug.WithoutTime())
+	logger = logger.Fork(logger.Name() + ":fork2")
+
+	logger.Println("log line")
+	// Output: [test:fork2] log line
 }

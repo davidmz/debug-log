@@ -49,6 +49,8 @@ func (l *namedLogger) Printf(format string, v ...interface{}) {
 	_ = l.print(l.name, fmt.Sprintf(format, v...))
 }
 
+func (l *namedLogger) Name() string { return l.name }
+
 func (l *namedLogger) Output() io.Writer { return l.out }
 
 func (l *namedLogger) Fork(name string) Logger {

@@ -13,6 +13,8 @@ type Logger interface {
 	Printf(format string, v ...interface{})
 	// Print writes a message via the fmt.Sprintln
 	Println(v ...interface{})
+	// Returns logger name
+	Name() string
 	// Output returns the underlying writer of the logger
 	Output() io.Writer
 	// Fork creates a new Logger with the same options but with a new name
