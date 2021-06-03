@@ -41,6 +41,11 @@ func UseEnvVar(name string) Option {
 	return UseEnvSource(func() string { return env })
 }
 
+// UseEnvString sets the constant string as the DEBUG value.
+func UseEnvString(envString string) Option {
+	return UseEnvSource(func() string { return envString })
+}
+
 // EnvSourceFunc is a type of function that returns a DEBUG value. Use it with UseEnvSource option
 // if you don't want to use standard UseEnvVar option.
 type EnvSourceFunc func() string

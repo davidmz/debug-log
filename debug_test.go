@@ -14,6 +14,13 @@ func ExampleNewLogger() {
 	// Output: [test] log line
 }
 
+func ExampleNewLogger_useEnvString() {
+	logger := debug.NewLogger("test", debug.WithoutTime(), debug.UseEnvString("test"))
+
+	logger.Println("log line")
+	// Output: [test] log line
+}
+
 func ExampleLogger_Fork() {
 	_ = os.Setenv("DEBUG", "test*")
 	logger := debug.NewLogger("test", debug.WithoutTime())
