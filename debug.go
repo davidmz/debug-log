@@ -18,7 +18,7 @@ type Logger interface {
 	// Output returns the underlying writer of the logger
 	Output() io.Writer
 	// Fork creates a new Logger with the same options but with a new name
-	Fork(name string) Logger
+	Fork(name string, options ...Option) Logger
 }
 
 // NewLogger creates a new named logger with the given options. If no options are provided,

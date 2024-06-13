@@ -15,7 +15,8 @@ type justLogger interface {
 }
 
 type namedLogger struct {
-	name string
+	name   string
+	prefix string
 
 	// Configurable by options
 	noTime    bool
@@ -53,8 +54,12 @@ func (l *namedLogger) Name() string { return l.name }
 
 func (l *namedLogger) Output() io.Writer { return l.out }
 
-func (l *namedLogger) Fork(name string) Logger {
-	return &namedLogger{name: name, parent: l}
+func (l *namedLogger) Fork(name string, options ...Option) Logger {
+	l1 := &namedLogger{name: name, parent: l}
+	for _, opt := range options {
+		opt.apply(l1)
+	}
+	return l1
 }
 
 // Internals
@@ -67,6 +72,10 @@ func (l *namedLogger) checkName(name string) bool {
 }
 
 func (l *namedLogger) print(name string, s string) error {
+	if l.prefix != "" {
+		s = l.prefix + " " + s
+	}
+
 	if l.parent != nil {
 		return l.parent.print(name, s)
 	}

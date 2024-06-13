@@ -38,3 +38,12 @@ func ExampleLogger_Fork_using_name() {
 	logger.Println("log line")
 	// Output: [test:fork2] log line
 }
+
+func ExampleLogger_Fork_using_prefix() {
+	_ = os.Setenv("DEBUG", "test*")
+	logger := debug.NewLogger("test", debug.WithoutTime())
+	logger = logger.Fork(logger.Name()+":fork2", debug.WithPrefix("test:"))
+
+	logger.Println("log line")
+	// Output: [test:fork2] test: log line
+}

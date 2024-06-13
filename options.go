@@ -26,6 +26,9 @@ func (f optionFn) apply(l *namedLogger) { f(l) }
 // WithOutput sets the output writer for the logger.
 func WithOutput(out io.Writer) Option { return optionFn(func(l *namedLogger) { l.out = out }) }
 
+// WithPrefix sets the prefix for the logger.
+func WithPrefix(prefix string) Option { return optionFn(func(l *namedLogger) { l.prefix = prefix }) }
+
 // WithoutTime excludes the timestamps from log output.
 func WithoutTime() Option { return optionFn(func(l *namedLogger) { l.noTime = true }) }
 
